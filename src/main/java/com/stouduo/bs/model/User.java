@@ -7,6 +7,16 @@ public class User extends FollowableResource {
 
     private String name;
     private String email;
+    private int followedCount = 0;
+
+    public int getFollowedCount() {
+        return followedCount;
+    }
+
+    public void setFollowedCount(int followedCount) {
+        this.followedCount = followedCount;
+    }
+
 
     public User() {
         this.type = FOLLOW_TYPE_USER;

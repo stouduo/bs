@@ -5,14 +5,15 @@ import com.arangodb.springframework.annotation.From;
 import com.arangodb.springframework.annotation.To;
 import org.springframework.data.annotation.Id;
 
-@Edge("link")
-public class Link {
+@Edge("unreads")
+public class Unread {
     @Id
     private String id;
     @From
     private Feed from;
     @To
     private Feed to;
+    private long createTime;
 
     public String getId() {
         return id;
@@ -36,5 +37,13 @@ public class Link {
 
     public void setTo(Feed to) {
         this.to = to;
+    }
+
+    public long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(long createTime) {
+        this.createTime = createTime;
     }
 }

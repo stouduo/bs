@@ -5,7 +5,7 @@ import com.arangodb.springframework.annotation.From;
 import com.arangodb.springframework.annotation.To;
 import org.springframework.data.annotation.Id;
 
-@Edge("publishs")
+@Edge("publish")
 public class Publish {
     @Id
     private String id;

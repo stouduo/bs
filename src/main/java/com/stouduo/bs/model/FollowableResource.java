@@ -8,6 +8,15 @@ public class FollowableResource {
     @Id
     protected String id;
     protected String type;
+    protected int followersCount = 0;
+
+    public int getFollowersCount() {
+        return followersCount;
+    }
+
+    public void setFollowersCount(int followersCount) {
+        this.followersCount = followersCount;
+    }
 
     public String getType() {
         return this.type;
