@@ -9,6 +9,15 @@ public class FollowableResource {
     protected String id;
     protected String type;
     protected int followersCount = 0;
+    protected String publishLink;
+
+    public String getPublishLink() {
+        return publishLink;
+    }
+
+    public void setPublishLink(String publishLink) {
+        this.publishLink = publishLink;
+    }
 
     public int getFollowersCount() {
         return followersCount;

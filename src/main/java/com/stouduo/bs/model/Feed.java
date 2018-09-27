@@ -12,6 +12,13 @@ public class Feed {
     private String author;
     private String resource;
 
+    public Feed() {
+    }
+
+    public Feed(String id) {
+        this.id = id;
+    }
+
     public String getResource() {
         return resource;
     }

@@ -15,6 +15,18 @@ public class Follow {
     private FollowableResource to;
     private long createTime;
 
+    public Follow() {
+    }
+
+    public Follow(FollowableResource to) {
+        this.to = to;
+    }
+
+    public Follow(FollowableResource from, FollowableResource to) {
+        this.from = from;
+        this.to = to;
+    }
+
     public String getId() {
         return id;
     }

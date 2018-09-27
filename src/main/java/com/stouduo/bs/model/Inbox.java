@@ -15,6 +15,14 @@ public class Inbox {
     private Feed to;
     private long createTime;
 
+    public Inbox() {
+    }
+
+    public Inbox(User from, Feed to) {
+        this.from = from;
+        this.to = to;
+    }
+
     public String getId() {
         return id;
     }
