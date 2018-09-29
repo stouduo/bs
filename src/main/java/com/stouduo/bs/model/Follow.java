@@ -10,7 +10,7 @@ public class Follow {
     @Id
     private String id;
     @From
-    private FollowableResource from;
+    private User from;
     @To
     private FollowableResource to;
     private long createTime;
@@ -22,7 +22,7 @@ public class Follow {
         this.to = to;
     }
 
-    public Follow(FollowableResource from, FollowableResource to) {
+    public Follow(User from, FollowableResource to) {
         this.from = from;
         this.to = to;
     }
@@ -35,11 +35,11 @@ public class Follow {
         this.id = id;
     }
 
-    public FollowableResource getFrom() {
+    public User getFrom() {
         return from;
     }
 
-    public void setFrom(FollowableResource from) {
+    public void setFrom(User from) {
         this.from = from;
     }
 

@@ -6,10 +6,10 @@ import com.stouduo.bs.model.User;
 
 import java.util.List;
 
-public class PullStrategy implements Strategy {
+public class PullStrategy extends BaseStrategy implements Strategy {
+
     @Override
     public void push(FollowableResource followableResource,Feed feed) {
-
     }
 
     @Override

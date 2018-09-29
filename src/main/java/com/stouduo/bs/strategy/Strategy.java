@@ -10,4 +10,5 @@ public interface Strategy {
     void push(FollowableResource followableResource,Feed feed);
 
     List<Feed> pull(User user);
+
 }

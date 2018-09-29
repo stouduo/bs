@@ -3,13 +3,29 @@ package com.stouduo.bs.model;
 import org.springframework.data.annotation.Id;
 
 public class FollowableResource {
-    public static final String FOLLOW_TYPE_RESOURCE = "RESOURCE";
-    public static final String FOLLOW_TYPE_USER = "USER";
+    public static final String FOLLOW_TYPE_RESOURCE = "resources";
+    public static final String FOLLOW_TYPE_USER = "users";
     @Id
     protected String id;
     protected String type;
     protected int followersCount = 0;
     protected String publishLink;
+    protected int publishCount = 0;
+
+    public int getPublishCount() {
+        return publishCount;
+    }
+
+    public void setPublishCount(int publishCount) {
+        this.publishCount = publishCount;
+    }
+
+    public FollowableResource(String id) {
+        this.id = id;
+    }
+
+    public FollowableResource() {
+    }
 
     public String getPublishLink() {
         return publishLink;

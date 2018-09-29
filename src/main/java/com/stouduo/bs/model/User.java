@@ -9,6 +9,15 @@ public class User extends FollowableResource {
     private String email;
     private int followedCount = 0;
     private String inboxLink;
+    private int inboxCount = 0;
+
+    public int getInboxCount() {
+        return inboxCount;
+    }
+
+    public void setInboxCount(int inboxCount) {
+        this.inboxCount = inboxCount;
+    }
 
     public String getInboxLink() {
         return inboxLink;
@@ -26,6 +35,9 @@ public class User extends FollowableResource {
         this.followedCount = followedCount;
     }
 
+    public User(String id) {
+        super(id);
+    }
 
     public User() {
         this.type = FOLLOW_TYPE_USER;

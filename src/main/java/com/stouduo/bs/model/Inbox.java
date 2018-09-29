@@ -10,17 +10,26 @@ public class Inbox {
     @Id
     private String id;
     @From
-    private User from;
+    private Feed from;
     @To
     private Feed to;
     private long createTime;
+    private String owner;
 
     public Inbox() {
+        this.createTime = System.currentTimeMillis();
     }
 
-    public Inbox(User from, Feed to) {
+    public Inbox(Feed to) {
+        this();
+        this.to = to;
+    }
+
+    public Inbox(Feed from, Feed to,String owner) {
+        this();
         this.from = from;
         this.to = to;
+        this.owner = owner;
     }
 
     public String getId() {
@@ -31,11 +40,11 @@ public class Inbox {
         this.id = id;
     }
 
-    public User getFrom() {
+    public Feed getFrom() {
         return from;
     }
 
-    public void setFrom(User from) {
+    public void setFrom(Feed from) {
         this.from = from;
     }
 

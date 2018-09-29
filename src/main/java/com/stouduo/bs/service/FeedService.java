@@ -6,10 +6,14 @@ import com.stouduo.bs.model.Publish;
 import com.stouduo.bs.repository.*;
 import com.stouduo.bs.strategy.Strategy;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
+
+@Service
 public class FeedService {
     @Autowired
     private UserRepository userRepository;
@@ -24,46 +28,34 @@ public class FeedService {
     @Autowired
     private Strategy strategy;
 
-    public void publishFeed(Feed feed) {
-        if (!feedRepository.findOne(Example.of(feed)).isPresent()) {
+    public void publish(Feed feed) {
+        if (!feedRepository.findOne(Example.of(feed, ExampleMatcher.matchingAll().withIgnorePaths("createTime"))).isPresent()) {
             Feed f = feedRepository.save(feed);
-            Follow example = new Follow();
             userRepository.findById(f.getAuthor()).ifPresent(user -> {
-                if (!user.getPublishLink().equals(f.getId()) && !publishRepository.findOne(Example.of(new Publish(f, user.getId()))).isPresent()) {
-                    if (!StringUtils.isEmpty(user.getPublishLink())) {
-                        publishRepository.save(new Publish(f, new Feed(user.getPublishLink()), user.getId()));
-                    }
+                if (!f.getId().equals(user.getPublishLink()) && !publishRepository.findOneByToAndOwner("feeds/" + f.getId(), user.getId()).isPresent()) {
+                    if (!StringUtils.isEmpty(user.getPublishLink()))
+                        publishRepository.save(new Publish(f, new Feed(user.getPublishLink()), "users/" + user.getId()));
+                    user.setPublishCount(user.getPublishCount() + 1);
                     user.setPublishLink(f.getId());
                     userRepository.save(user);
                 }
                 strategy.push(user, f);
-//                if (vUserFollowersCount >= user.getFollowersCount()) {
-//                    example.setTo(user);
-//                    followRepository.findAll(Example.of(example)).forEach(follower -> {
-////                        Publish publishEx = new Publish();
-////                        User from = new User();
-////                        from.setId(follower.getFrom().getId());
-////                        publishEx.setFrom(from);
-////                        publishEx.setTo();
-////                        if (!publishRepository.findOne(Example.of()))
-//                    });
-//                }
             });
             resourceRepository.findById(f.getResource()).ifPresent(resource -> {
-                if (!resource.getPublishLink().equals(f.getId()) && !publishRepository.findOne(Example.of(new Publish(f, resource.getId()))).isPresent()) {
-                    publishRepository.save(new Publish(f, new Feed(resource.getPublishLink()), resource.getId()));
+                if (!f.getId().equals(resource.getPublishLink()) && !publishRepository.findOneByToAndOwner("feeds/" + f.getId(), resource.getId()).isPresent()) {
+                    if (!StringUtils.isEmpty(resource.getPublishLink()))
+                        publishRepository.save(new Publish(f, new Feed(resource.getPublishLink()), "resources/" + resource.getId()));
                     resource.setPublishLink(f.getId());
+                    resource.setPublishCount(resource.getPublishCount() + 1);
                     resourceRepository.save(resource);
                 }
                 strategy.push(resource, f);
-//                if (vResourceFollowersCount >= resource.getFollowersCount()) {
-//                    example.setTo(resource);
-//                    followRepository.findAll(Example.of(example)).forEach(follower -> {
-//
-//                    });
-//                }
             });
         }
     }
 
+
+//    public List<Feed> browse(String userId, int score) {
+//        return
+//    }
 }
