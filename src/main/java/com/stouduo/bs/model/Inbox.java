@@ -15,6 +15,23 @@ public class Inbox {
     private Feed to;
     private long createTime;
     private String owner;
+    private String label = "inbox";
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
 
     public Inbox() {
         this.createTime = System.currentTimeMillis();
@@ -25,7 +42,7 @@ public class Inbox {
         this.to = to;
     }
 
-    public Inbox(Feed from, Feed to,String owner) {
+    public Inbox(Feed from, Feed to, String owner) {
         this();
         this.from = from;
         this.to = to;

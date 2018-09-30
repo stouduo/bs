@@ -13,7 +13,7 @@ public class PullStrategy extends BaseStrategy implements Strategy {
     }
 
     @Override
-    public List<Feed> pull(User user) {
+    public List<Feed> pull(String userId, long score, int size) {
         return null;
     }
 }

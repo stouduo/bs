@@ -11,23 +11,16 @@ import org.springframework.scheduling.annotation.Async;
 import java.util.List;
 
 public class PushStrategy extends BaseStrategy implements Strategy {
-    private int vFollowersCount;
 
-    public PushStrategy(int vFollowersCount, FollowRepository followRepository, InboxRepository inboxRepository, UserRepository userRepository) {
-        super(followRepository, inboxRepository, userRepository);
-        this.vFollowersCount = vFollowersCount;
-    }
 
     @Override
-//    @Async("asyncServiceExecutor")
+    @Async("asyncServiceExecutor")
     public void push(FollowableResource followableResource, Feed feed) {
-        if (vFollowersCount >= followableResource.getFollowersCount()) {
-            doPush(followableResource, feed);
-        }
+        doPush(followableResource, feed);
     }
 
     @Override
-    public List<Feed> pull(User user) {
+    public List<Feed> pull(String userId, long score, int size) {
         return null;
     }
 }

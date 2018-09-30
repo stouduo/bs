@@ -15,6 +15,15 @@ public class Publish {
     private Feed to;
 
     private String owner;
+    private String label = "publish";
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
 
     public String getOwner() {
         return owner;

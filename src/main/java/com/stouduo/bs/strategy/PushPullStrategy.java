@@ -13,19 +13,20 @@ import java.util.List;
 public class PushPullStrategy extends BaseStrategy implements Strategy {
     private int vFollowersCount;
 
-    public PushPullStrategy(int vFollowersCount, FollowRepository followRepository, InboxRepository inboxRepository, UserRepository userRepository) {
-        super(followRepository, inboxRepository, userRepository);
+    public PushPullStrategy(int vFollowersCount) {
         this.vFollowersCount = vFollowersCount;
     }
 
     @Override
     @Async("asyncServiceExecutor")
     public void push(FollowableResource followableResource, Feed feed) {
-        doPush(followableResource, feed);
+        if (vFollowersCount >= followableResource.getFollowersCount()) {
+            doPush(followableResource, feed);
+        }
     }
 
     @Override
-    public List<Feed> pull(User user) {
+    public List<Feed> pull(String userId, long score, int size) {
         return null;
     }
 }

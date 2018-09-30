@@ -1,16 +1,15 @@
 package com.stouduo.bs.service;
 
 import com.stouduo.bs.model.Feed;
-import com.stouduo.bs.model.Follow;
 import com.stouduo.bs.model.Publish;
 import com.stouduo.bs.repository.*;
 import com.stouduo.bs.strategy.Strategy;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -55,7 +54,11 @@ public class FeedService {
     }
 
 
-//    public List<Feed> browse(String userId, int score) {
-//        return
-//    }
+    public Page<Feed> pullUserFeeds(String userId, int pageNum, int pageSize) {
+        return feedRepository.findAllByAuthorEquals(userId, new PageRequest(pageNum - 1, pageSize, new Sort(new Sort.Order(Sort.Direction.DESC, "createTime"))));
+    }
+
+    public List<Feed> pullAllFeeds(String userId, long score, int size) {
+        return strategy.pull(userId, score, size);
+    }
 }

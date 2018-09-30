@@ -7,8 +7,8 @@ import com.stouduo.bs.model.User;
 import java.util.List;
 
 public interface Strategy {
-    void push(FollowableResource followableResource,Feed feed);
+    void push(FollowableResource followableResource, Feed feed);
 
-    List<Feed> pull(User user);
+    List<Feed> pull(String userId, long score, int size);
 
 }

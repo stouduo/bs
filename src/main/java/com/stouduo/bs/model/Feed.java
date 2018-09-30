@@ -58,4 +58,15 @@ public class Feed {
     public void setAuthor(String author) {
         this.author = author;
     }
+
+    @Override
+    public String toString() {
+        return "Feed{" +
+                "id='" + id + '\'' +
+                ", msg='" + msg + '\'' +
+                ", createTime=" + createTime +
+                ", author='" + author + '\'' +
+                ", resource='" + resource + '\'' +
+                '}';
+    }
 }

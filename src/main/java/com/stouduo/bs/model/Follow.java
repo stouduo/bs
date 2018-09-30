@@ -14,6 +14,15 @@ public class Follow {
     @To
     private FollowableResource to;
     private long createTime;
+    private String label = "follows";
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
 
     public Follow() {
     }

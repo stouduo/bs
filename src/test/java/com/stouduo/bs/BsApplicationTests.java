@@ -1,8 +1,10 @@
 package com.stouduo.bs;
 
 import com.stouduo.bs.model.Feed;
+import com.stouduo.bs.model.Publish;
 import com.stouduo.bs.model.Resource;
 import com.stouduo.bs.model.User;
+import com.stouduo.bs.repository.FeedRepository;
 import com.stouduo.bs.repository.FollowRepository;
 import com.stouduo.bs.service.FeedService;
 import com.stouduo.bs.service.FollowService;
@@ -30,6 +32,9 @@ public class BsApplicationTests {
     private FeedService feedService;
     @Autowired
     private FollowRepository followRepository;
+
+    @Autowired
+    private FeedRepository feedRepository;
 
     @Test
     public void testFindAll() {
@@ -118,17 +123,41 @@ public class BsApplicationTests {
     public void testPublishFeed() {
         long t = System.currentTimeMillis();
         Feed feed = new Feed();
-        feed.setAuthor("stouduo");
+        feed.setAuthor("users/stouduo");
         feed.setCreateTime(t);
         feed.setMsg("《速度与激情8》可太好看了！");
-        feed.setResource("movie");
+        feed.setResource("resources/movie");
         feedService.publish(feed);
         feed = new Feed();
-        feed.setAuthor("stouduo");
+        feed.setAuthor("users/stouduo");
         feed.setCreateTime(t);
         feed.setMsg("《变形金刚7也很好看！");
-        feed.setResource("movie");
+        feed.setResource("resources/movie");
         feedService.publish(feed);
     }
+
+    @Test
+    public void testPullUserFeeds() {
+        feedService.pullUserFeeds("stouduo", 1, 10).getContent().forEach(System.out::println);
+    }
+
+    @Test
+    public void testFindNextN() {
+        long start = System.currentTimeMillis();
+        IntStream.rangeClosed(1, 10).forEach(i -> {
+            feedRepository.findNextN("feeds/283229", 1, "publish", "users/stouduo",0).forEach(System.out::println);
+        });
+        long end = System.currentTimeMillis();
+        System.out.println((end - start));
+    }
+
+    @Test
+    public void testFindNextN1() {
+        long start = System.currentTimeMillis();
+        feedRepository.findNextN("feeds/283229", 10, "publish", "users/stouduo",0).forEach(System.out::println);
+        long end = System.currentTimeMillis();
+        System.out.println((end - start));
+    }
+
 
 }
