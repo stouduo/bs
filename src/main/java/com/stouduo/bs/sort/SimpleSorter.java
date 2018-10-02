@@ -13,6 +13,7 @@ public class SimpleSorter<T> implements Sorter<T> {
     }
 
     public SimpleSorter() {
+        sorter = new TreeSet<>();
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.stouduo.bs.strategy;
 
 import com.stouduo.bs.model.*;
+import com.stouduo.bs.repository.FeedRepository;
 import com.stouduo.bs.repository.FollowRepository;
 import com.stouduo.bs.repository.InboxRepository;
 import com.stouduo.bs.repository.UserRepository;
@@ -20,11 +21,14 @@ public class BaseStrategy {
 
 
     @Autowired
-    private FollowRepository followRepository;
+    protected FollowRepository followRepository;
     @Autowired
-    private InboxRepository inboxRepository;
+    protected InboxRepository inboxRepository;
     @Autowired
-    private UserRepository userRepository;
+    protected UserRepository userRepository;
+
+    @Autowired
+    protected FeedRepository feedRepository;
 
     public void doPush(FollowableResource followableResource, Feed feed) {
         followRepository.findAll(followableResource.getType() + "/" + followableResource.getId()).forEach(follow -> {

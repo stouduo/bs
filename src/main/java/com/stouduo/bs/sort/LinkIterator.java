@@ -7,24 +7,26 @@ import java.util.Iterator;
 import java.util.List;
 
 public class LinkIterator implements Iterator<Link> {
+    public static final String LINK_PUBLISH = "publish";
+    public static final String LINK_INBOX = "inbox";
     private FeedRepository feedRepository;
-    private Link link, next;
+    private Feed feed;
+    private Link next;
     private String edge;
     private String owner;
     private long creatTime;
 
-    public LinkIterator(FeedRepository feedRepository, Link link, Link next, String edge, String owner, long creatTime) {
+    public LinkIterator(FeedRepository feedRepository, Feed feed, String edge, String owner, long creatTime) {
         this.feedRepository = feedRepository;
-        this.link = link;
-        this.next = next;
         this.edge = edge;
+        this.feed = feed;
         this.owner = owner;
         this.creatTime = creatTime;
     }
 
     @Override
     public boolean hasNext() {
-        List<Feed> feeds = feedRepository.findNextN(link.getHead().getId(), 1, edge, owner, creatTime);
+        List<Feed> feeds = feedRepository.findNextN("feeds/"+feed.getId(), 1, edge, owner, creatTime);
         if (feeds.size() > 0) {
             next = new Link(feeds.get(0), this);
             return true;
@@ -37,7 +39,7 @@ public class LinkIterator implements Iterator<Link> {
         if (next == null) {
             hasNext();
         }
-        this.link = this.next;
+        this.feed = this.next.getHead();
         return next;
     }
 }

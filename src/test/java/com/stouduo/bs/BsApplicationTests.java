@@ -123,15 +123,15 @@ public class BsApplicationTests {
     public void testPublishFeed() {
         long t = System.currentTimeMillis();
         Feed feed = new Feed();
-        feed.setAuthor("users/stouduo");
+        feed.setAuthor("users/rb");
         feed.setCreateTime(t);
-        feed.setMsg("《速度与激情8》可太好看了！");
+        feed.setMsg("《速度与激情12》可太好看了！");
         feed.setResource("resources/movie");
         feedService.publish(feed);
         feed = new Feed();
-        feed.setAuthor("users/stouduo");
+        feed.setAuthor("users/rb");
         feed.setCreateTime(t);
-        feed.setMsg("《变形金刚7也很好看！");
+        feed.setMsg("《变形金刚11也很好看！");
         feed.setResource("resources/movie");
         feedService.publish(feed);
     }
@@ -142,10 +142,15 @@ public class BsApplicationTests {
     }
 
     @Test
+    public void testPullAllFeeds() {
+        feedService.pullAllFeeds("users/stouduo", 0, 10).forEach(System.out::println);
+    }
+
+    @Test
     public void testFindNextN() {
         long start = System.currentTimeMillis();
         IntStream.rangeClosed(1, 10).forEach(i -> {
-            feedRepository.findNextN("feeds/283229", 1, "publish", "users/stouduo",0).forEach(System.out::println);
+            feedRepository.findNextN("feeds/283229", 1, "publish", "users/stouduo", 0).forEach(System.out::println);
         });
         long end = System.currentTimeMillis();
         System.out.println((end - start));
@@ -154,7 +159,7 @@ public class BsApplicationTests {
     @Test
     public void testFindNextN1() {
         long start = System.currentTimeMillis();
-        feedRepository.findNextN("feeds/283229", 10, "publish", "users/stouduo",0).forEach(System.out::println);
+        feedRepository.findNextN("feeds/283229", 10, "publish", "users/stouduo", 0).forEach(System.out::println);
         long end = System.currentTimeMillis();
         System.out.println((end - start));
     }

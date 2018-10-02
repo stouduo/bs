@@ -23,7 +23,7 @@ public class EngineConfig {
     }
 
     @Bean
-    @ConditionalOnProperty(value = "engine.feed.transform.strategy", havingValue = "pull_push")
+    @ConditionalOnProperty(value = "engine.feed.transform.strategy", havingValue = "push_pull")
     public Strategy pullPushStrategy() {
         return new PushPullStrategy(vFollowersCount);
     }

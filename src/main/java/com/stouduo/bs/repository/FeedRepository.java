@@ -15,6 +15,6 @@ import java.util.Optional;
 public interface FeedRepository extends ArangoRepository<Feed, String> {
     Page<Feed> findAllByAuthorEquals(String author, Pageable pageable);
 
-    @Query("for v,e,p in 1..@n outbound @id graph 'engine'  filter p.edges[*].label all==@edge and and v.createTime>=createTime p.vertices[*].author all==@author and p.edges[*].owner all==@author  limit @n return v")
+    @Query("for v,e,p in 1..@n outbound @id graph 'engine'  filter p.edges[*].label all==@edge and  v.createTime>=@createTime and p.edges[*].owner all==@author  limit @n return v")
     List<Feed> findNextN(@Param("id") String id, @Param("n") int n, @Param("edge") String relation, @Param("author") String author, @Param("createTime") long createTime);
 }
