@@ -17,14 +17,17 @@ import java.util.Comparator;
 import java.util.List;
 
 public class PushPullStrategy extends BaseStrategy implements Strategy {
-    private int vFollowersCount;
+    protected int vFollowersCount;
+
+    public PushPullStrategy() {
+    }
 
     public PushPullStrategy(int vFollowersCount) {
         this.vFollowersCount = vFollowersCount;
     }
 
     @Override
-//    @Async("asyncServiceExecutor")
+    @Async("asyncServiceExecutor")
     public void push(FollowableResource followableResource, Feed feed) {
         if (vFollowersCount >= followableResource.getFollowersCount()) {
             doPush(followableResource, feed);
@@ -35,10 +38,10 @@ public class PushPullStrategy extends BaseStrategy implements Strategy {
     public List<Feed> pull(String userId, long score, int size) {
         List<Link> links = new ArrayList<>();
         userRepository.findById(userId).ifPresent(user -> {
-            feedRepository.findById(user.getPublishLink()).ifPresent(feed -> links.add(new Link(feed, new LinkIterator(feedRepository, feed, LinkIterator.LINK_PUBLISH, userId, score))));
-            feedRepository.findById(user.getInboxLink()).ifPresent(feed -> links.add(new Link(feed, new LinkIterator(feedRepository, feed, LinkIterator.LINK_INBOX, userId, score))));
+            feedRepository.findById(user.getPublishLink()).ifPresent(feed -> links.add(new Link(feed, getIterator(feed, LinkIterator.LINK_PUBLISH, userId, score))));
+            feedRepository.findById(user.getInboxLink()).ifPresent(feed -> links.add(new Link(feed, getIterator(feed, LinkIterator.LINK_INBOX, userId, score))));
         });
-        userRepository.findAllVFollowers(userId, Publish.class, vFollowersCount).forEach(followableResource -> feedRepository.findById(followableResource.getPublishLink()).ifPresent(feed -> links.add(new Link(feed, new LinkIterator(feedRepository, feed, LinkIterator.LINK_PUBLISH, followableResource.getId(), score)))));
-        return doPull(links, new SimpleSorter<>((l1, l2) -> (int) (l2.getHead().getCreateTime() - l1.getHead().getCreateTime())), size);
+        userRepository.findAllVFollowers(userId, Publish.class, vFollowersCount).forEach(followableResource -> feedRepository.findById(followableResource.getPublishLink()).ifPresent(feed -> links.add(new Link(feed, getIterator(feed, LinkIterator.LINK_PUBLISH, followableResource.getId(), score)))));
+        return doPull(links, size);
     }
 }

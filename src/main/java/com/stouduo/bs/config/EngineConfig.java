@@ -12,9 +12,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class EngineConfig {
-    @Value("${engine.v.followersCount.min:1000}")
-    private int vFollowersCount;
-
 
     @Bean
     @ConditionalOnProperty(value = "engine.feed.transform.strategy", havingValue = "push")
@@ -24,7 +21,7 @@ public class EngineConfig {
 
     @Bean
     @ConditionalOnProperty(value = "engine.feed.transform.strategy", havingValue = "push_pull")
-    public Strategy pullPushStrategy() {
+    public Strategy pullPushStrategy(@Value("${engine.v.followersCount.min:1000}") int vFollowersCount) {
         return new PushPullStrategy(vFollowersCount);
     }
 

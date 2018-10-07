@@ -3,6 +3,7 @@ package com.stouduo.bs.strategy;
 import com.stouduo.bs.model.Feed;
 import com.stouduo.bs.model.FollowableResource;
 import com.stouduo.bs.model.User;
+import com.stouduo.bs.sort.Sorter;
 
 import java.util.List;
 

@@ -123,13 +123,13 @@ public class BsApplicationTests {
     public void testPublishFeed() {
         long t = System.currentTimeMillis();
         Feed feed = new Feed();
-        feed.setAuthor("users/rb");
+        feed.setAuthor("users/stouduo");
         feed.setCreateTime(t);
         feed.setMsg("《速度与激情12》可太好看了！");
         feed.setResource("resources/movie");
         feedService.publish(feed);
         feed = new Feed();
-        feed.setAuthor("users/rb");
+        feed.setAuthor("users/stouduo");
         feed.setCreateTime(t);
         feed.setMsg("《变形金刚11也很好看！");
         feed.setResource("resources/movie");

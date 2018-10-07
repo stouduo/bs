@@ -16,9 +16,8 @@ import java.util.List;
 
 public class PushStrategy extends BaseStrategy implements Strategy {
 
-
     @Override
-//    @Async("asyncServiceExecutor")
+    @Async("asyncServiceExecutor")
     public void push(FollowableResource followableResource, Feed feed) {
         doPush(followableResource, feed);
     }
@@ -27,9 +26,9 @@ public class PushStrategy extends BaseStrategy implements Strategy {
     public List<Feed> pull(String userId, long score, int size) {
         List<Link> links = new ArrayList<>();
         userRepository.findById(userId).ifPresent(user -> {
-            feedRepository.findById(user.getPublishLink()).ifPresent(feed -> links.add(new Link(feed, new LinkIterator(feedRepository, feed, LinkIterator.LINK_PUBLISH, userId, score))));
-            feedRepository.findById(user.getInboxLink()).ifPresent(feed -> links.add(new Link(feed, new LinkIterator(feedRepository, feed, LinkIterator.LINK_INBOX, userId, score))));
+            feedRepository.findById(user.getPublishLink()).ifPresent(feed -> links.add(new Link(feed, getIterator( feed, LinkIterator.LINK_PUBLISH, userId, score))));
+            feedRepository.findById(user.getInboxLink()).ifPresent(feed -> links.add(new Link(feed, getIterator( feed, LinkIterator.LINK_INBOX, userId, score))));
         });
-        return doPull(links, new SimpleSorter<>(), size);
+        return doPull(links, size);
     }
 }
