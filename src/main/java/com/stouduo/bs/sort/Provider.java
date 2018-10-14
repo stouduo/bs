@@ -18,7 +18,7 @@ public class Provider implements ApplicationContextAware {
     @Value("${engine.iterator.name:linkIterator}")
     private String iteratorName;
 
-    public Sorter getSorter() {
+    public Sorter<Link> getSorter() {
         return context.getBean(sorterName, Sorter.class);
     }
 

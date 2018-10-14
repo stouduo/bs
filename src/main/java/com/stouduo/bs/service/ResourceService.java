@@ -11,7 +11,6 @@ public class ResourceService {
     private ResourceRepository resourceRepository;
 
     public Resource insertResource(Resource resource) {
-        resource = resourceRepository.save(resource);
         return resourceRepository.save(resource);
     }
 }

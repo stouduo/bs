@@ -3,6 +3,8 @@ package com.stouduo.bs.model;
 import com.arangodb.springframework.annotation.Document;
 import org.springframework.data.annotation.Id;
 
+import java.util.Objects;
+
 @Document("feeds")
 public class Feed {
     @Id
@@ -57,6 +59,20 @@ public class Feed {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Feed feed = (Feed) o;
+        return Objects.equals(id, feed.id);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id);
     }
 
     @Override

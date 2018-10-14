@@ -5,15 +5,15 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.TreeSet;
+import java.util.PriorityQueue;
 
 @Scope("prototype")
-@Component("simple")
-public class SimpleSorter implements Sorter<Link> {
-    private TreeSet<Link> sorter;
+@Component("heap")
+public class HeapSorter implements Sorter<Link> {
+    private PriorityQueue<Link> heap;
 
-    public SimpleSorter() {
-        sorter = new TreeSet<>((l1, l2) -> {
+    public HeapSorter() {
+        this.heap = new PriorityQueue<>((l1, l2) -> {
             int createTime = (int) (l2.getHead().getCreateTime() - l1.getHead().getCreateTime());
             if (createTime == 0) {
                 return l2.getHead().getId().compareTo(l1.getHead().getId());
@@ -23,28 +23,27 @@ public class SimpleSorter implements Sorter<Link> {
     }
 
     @Override
-    public boolean isEmpty() {
-        return sorter.isEmpty();
-    }
-
-
-    @Override
     public Link pollFirst() {
-        return sorter.pollFirst();
+        return heap.poll();
     }
 
     @Override
-    public boolean add(Link Link) {
-        return sorter.add(Link);
+    public boolean add(Link link) {
+        return heap.add(link);
     }
 
     @Override
     public boolean addAll(Collection<? extends Link> all) {
-        return sorter.addAll(all);
+        return heap.addAll(all);
     }
 
     @Override
     public Iterator<Link> iterator() {
-        return sorter.iterator();
+        return heap.iterator();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return heap.isEmpty();
     }
 }

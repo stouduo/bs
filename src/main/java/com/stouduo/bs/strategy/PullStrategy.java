@@ -20,8 +20,11 @@ public class PullStrategy extends BaseStrategy implements Strategy {
     @Override
     public List<Feed> pull(String userId, long score, int size) {
         List<Link> links = new ArrayList<>();
-        userRepository.findById(userId).ifPresent(user -> feedRepository.findById(user.getPublishLink()).ifPresent(feed -> links.add(new Link(feed,getIterator( feed, LinkIterator.LINK_PUBLISH, userId, score)))));
-        followRepository.findAll(userId).forEach(follow -> feedRepository.findById(follow.getFrom().getPublishLink()).ifPresent(feed -> links.add(new Link(feed, getIterator(feed, LinkIterator.LINK_PUBLISH, follow.getFrom().getId(), score)))));
+        userRepository.findById(userId).ifPresent(user -> feedRepository.findById(user.getPublishLink()).ifPresent(feed -> links.add(new Link(feed, getIterator(feed, LinkIterator.LINK_PUBLISH, userId, score)))));
+        followRepository.findAll(userId).forEach(follow -> {
+            if (follow.getFrom().getPublishLink() != null)
+                feedRepository.findById(follow.getFrom().getPublishLink()).ifPresent(feed -> links.add(new Link(feed, getIterator(feed, LinkIterator.LINK_PUBLISH, follow.getFrom().getId(), score))));
+        });
         return doPull(links, size);
     }
 }

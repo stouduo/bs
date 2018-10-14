@@ -1,9 +1,6 @@
 package com.stouduo.bs.strategy;
 
-import com.stouduo.bs.model.Feed;
-import com.stouduo.bs.model.FollowableResource;
-import com.stouduo.bs.model.Publish;
-import com.stouduo.bs.model.User;
+import com.stouduo.bs.model.*;
 import com.stouduo.bs.repository.FollowRepository;
 import com.stouduo.bs.repository.InboxRepository;
 import com.stouduo.bs.repository.UserRepository;
@@ -38,10 +35,15 @@ public class PushPullStrategy extends BaseStrategy implements Strategy {
     public List<Feed> pull(String userId, long score, int size) {
         List<Link> links = new ArrayList<>();
         userRepository.findById(userId).ifPresent(user -> {
-            feedRepository.findById(user.getPublishLink()).ifPresent(feed -> links.add(new Link(feed, getIterator(feed, LinkIterator.LINK_PUBLISH, userId, score))));
-            feedRepository.findById(user.getInboxLink()).ifPresent(feed -> links.add(new Link(feed, getIterator(feed, LinkIterator.LINK_INBOX, userId, score))));
+            if (user.getPublishLink() != null)
+                feedRepository.findById(user.getPublishLink()).ifPresent(feed -> links.add(new Link(feed, getIterator(feed, LinkIterator.LINK_PUBLISH, userId, score))));
+            if (user.getInboxLink() != null)
+                feedRepository.findById(user.getInboxLink()).ifPresent(feed -> links.add(new Link(feed, getIterator(feed, LinkIterator.LINK_INBOX, userId, score))));
         });
-        userRepository.findAllVFollowers(userId, Publish.class, vFollowersCount).forEach(followableResource -> feedRepository.findById(followableResource.getPublishLink()).ifPresent(feed -> links.add(new Link(feed, getIterator(feed, LinkIterator.LINK_PUBLISH, followableResource.getId(), score)))));
+        userRepository.findAllVFollowers(userId, Follow.class, vFollowersCount).forEach(followableResource -> {
+            if (followableResource.getPublishLink() != null)
+                feedRepository.findById(followableResource.getPublishLink()).ifPresent(feed -> links.add(new Link(feed, getIterator(feed, LinkIterator.LINK_PUBLISH, followableResource.getId(), score))));
+        });
         return doPull(links, size);
     }
 }

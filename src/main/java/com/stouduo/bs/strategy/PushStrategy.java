@@ -26,8 +26,10 @@ public class PushStrategy extends BaseStrategy implements Strategy {
     public List<Feed> pull(String userId, long score, int size) {
         List<Link> links = new ArrayList<>();
         userRepository.findById(userId).ifPresent(user -> {
-            feedRepository.findById(user.getPublishLink()).ifPresent(feed -> links.add(new Link(feed, getIterator( feed, LinkIterator.LINK_PUBLISH, userId, score))));
-            feedRepository.findById(user.getInboxLink()).ifPresent(feed -> links.add(new Link(feed, getIterator( feed, LinkIterator.LINK_INBOX, userId, score))));
+            if (user.getPublishLink() != null)
+                feedRepository.findById(user.getPublishLink()).ifPresent(feed -> links.add(new Link(feed, getIterator(feed, LinkIterator.LINK_PUBLISH, userId, score))));
+            if (user.getInboxLink() != null)
+                feedRepository.findById(user.getInboxLink()).ifPresent(feed -> links.add(new Link(feed, getIterator(feed, LinkIterator.LINK_INBOX, userId, score))));
         });
         return doPull(links, size);
     }

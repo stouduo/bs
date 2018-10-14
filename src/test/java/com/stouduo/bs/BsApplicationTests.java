@@ -47,7 +47,7 @@ public class BsApplicationTests {
 
     @Test
     public void testBatchInsertUser() {
-        IntStream.rangeClosed(1, 100).forEach(i -> {
+        IntStream.rangeClosed(1001, 2500).forEach(i -> {
             User user = new User();
             user.setId(i + "");
             user.setEmail(String.format("%s%s.@stouduo.com", i, i));
@@ -58,21 +58,22 @@ public class BsApplicationTests {
 
     @Test
     public void testBatchFollowUser() {
-        IntStream.rangeClosed(1, 100).forEach(i -> {
-            followService.followUser(i + "", "" + (i / 10 + 1));
+        IntStream.rangeClosed(1001, 2500).forEach(i -> {
+            followService.followUser("stouduo", "" + i);
+            followService.followUser("" + i, "stouduo");
         });
     }
 
     @Test
     public void testBatchPublishFeed() {
         long t = System.currentTimeMillis();
-        IntStream.rangeClosed(1, 1000).forEach(i -> {
+        IntStream.rangeClosed(10001, 15000).forEach(i -> {
             int j = i / 10 + 1;
             Feed feed = new Feed();
             feed.setAuthor(j + "");
             feed.setCreateTime(t);
-            feed.setMsg("这是第" + i + "条动态！");
-            feed.setResource("28558");
+            feed.setMsg("这是" + j + "第" + i + "条动态！");
+            feed.setResource("movie");
             feedService.publish(feed);
         });
     }
@@ -125,13 +126,13 @@ public class BsApplicationTests {
         Feed feed = new Feed();
         feed.setAuthor("users/stouduo");
         feed.setCreateTime(t);
-        feed.setMsg("《速度与激情12》可太好看了！");
+        feed.setMsg("《速度与激情13》可太好看了！");
         feed.setResource("resources/movie");
         feedService.publish(feed);
         feed = new Feed();
         feed.setAuthor("users/stouduo");
         feed.setCreateTime(t);
-        feed.setMsg("《变形金刚11也很好看！");
+        feed.setMsg("《变形金刚12也很好看！");
         feed.setResource("resources/movie");
         feedService.publish(feed);
     }
@@ -143,7 +144,10 @@ public class BsApplicationTests {
 
     @Test
     public void testPullAllFeeds() {
-        feedService.pullAllFeeds("users/stouduo", 0, 10).forEach(System.out::println);
+        long start = System.currentTimeMillis();
+        feedService.pullAllFeeds("users/stouduo", 0, 50);
+        long end = System.currentTimeMillis();
+        System.out.println((end - start));
     }
 
     @Test
